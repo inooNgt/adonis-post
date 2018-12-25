@@ -35,7 +35,7 @@ adonis migration:run
 
 1.修改监听地址
 
-```
+```shell
 vim /etc/postgresql/9.5/main/postgresql.conf
 ```
 
@@ -43,7 +43,7 @@ vim /etc/postgresql/9.5/main/postgresql.conf
 
 2.修改可访问的用户 ip 段
 
-```
+```shell
 vim /etc/postgresql/9.5/main/pg_hba.conf
 ```
 
@@ -51,7 +51,7 @@ vim /etc/postgresql/9.5/main/pg_hba.conf
 
 #### 在 window 查看远程端口是否开放
 
-```
+```shell
 telnet HOST PORT
 
 ```
@@ -60,13 +60,20 @@ telnet HOST PORT
 
 #### 启动、停止、重启
 
-```
+```shell
 sudo /etc/init.d/postgresql start|stop|restart
 ```
 
 #### 查看状态
 
+```shell
+sudo netstat -ntlup
+
 ```
+
+### Adonis 命令
+
+```shell
 sudo netstat -ntlup
 
 ```

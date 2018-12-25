@@ -16,6 +16,8 @@ class PostController {
     const post = new Post()
     const _body = request.all()
 
+    console.log(request)
+
     const user = await auth.getUser()
 
     if (_body.post_title && _body.post_body) {

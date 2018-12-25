@@ -21,7 +21,7 @@ Route.on('/').render('home')
 /**
  * 用户注册
  */
-Route.post('/api/user/register', 'UserController.register')
+Route.post('/api/user/register', 'UserController.register').middleware('guest')
 
 /**
  * 用户登录
@@ -29,9 +29,14 @@ Route.post('/api/user/register', 'UserController.register')
 Route.post('/api/user/login', 'UserController.login').middleware('guest')
 
 /**
- * 用户列表
+ * 用户登录
  */
-Route.get('/api/users', 'UserController.index')
+Route.post('/api/user/logout', 'UserController.logout').middleware('auth')
+
+/**
+ * 获取用户信息
+ */
+Route.get('/api/user', 'UserController.index').middleware('auth')
 
 /**
  * 文章列表
