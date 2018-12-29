@@ -1,6 +1,12 @@
 'use strict'
 
+const Env = use('Env')
 const User = use('App/Models/User')
+const qiniu = require('qiniu')
+const Helpers = use('Helpers')
+const path = require('path')
+
+const uploadPath = path.join(__dirname, '../../../uploads')
 
 class UserController {
   /**
@@ -73,6 +79,86 @@ class UserController {
       console.log('error:', e)
       response.status(400).send(e)
     }
+  }
+
+  /**
+   * 用户上传文件
+   *
+   */
+  async userfile({ request, response, auth }) {
+    let token = this.getUpToken()
+
+    const fileInfo = request.file('file', {
+      types: ['image'],
+      size: '2mb'
+    })
+    const fileName = `${new Date().getTime()}.${fileInfo.extname}`
+
+    try {
+      await fileInfo.move(Helpers.tmpPath('uploads'), {
+        name: fileName
+      })
+    } catch (e) {
+      console.log(e)
+    }
+
+    try {
+      let result = await this.putFile(token, fileName, fileInfo.tmpPath)
+      response.ok({ ...result, url: `${Env.get('QN_DOMAIN')}${result.key}` })
+    } catch (e) {
+      console.log(e)
+      response.send(e)
+    }
+  }
+
+  /**
+   * 将文件传至第三方服务器
+   * @param  {...any} args
+   */
+  async putFile(...args) {
+    let config0 = new qiniu.conf.Config()
+    config0.zone = qiniu.zone.Zone_z0
+    let formUploader = new qiniu.form_up.FormUploader(config0)
+    let putExtra = new qiniu.form_up.PutExtra()
+
+    return new Promise((resolve, reject) => {
+      formUploader.putFile(...args, putExtra, (respErr, respBody, respInfo) => {
+        if (respErr) {
+          reject(new Error(respErr))
+        }
+        if (respInfo.statusCode == 200) {
+          resolve(respBody)
+        } else {
+          reject(new Error(respInfo))
+        }
+      })
+    })
+  }
+
+  /**
+   * 获取七牛uptoken
+   *
+   */
+  getUpToken() {
+    const qnconfig = {
+      Port: Env.get('PORT'),
+      AccessKey: Env.get('QN_ACCESSKEY'),
+      SecretKey: Env.get('QN_SECRETKEY'),
+      Bucket: Env.get('QN_BUCKET'),
+      UptokenUrl: Env.get('QN_UPTOKENURL'),
+      Domain: Env.get('QN_DOMAIN')
+    }
+    let mac = new qiniu.auth.digest.Mac(qnconfig.AccessKey, qnconfig.SecretKey)
+    let options = {
+      scope: qnconfig.Bucket,
+      deleteAfterDays: 1,
+      returnBody:
+        '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}'
+    }
+    let putPolicy = new qiniu.rs.PutPolicy(options)
+    let token = putPolicy.uploadToken(mac)
+
+    return token
   }
 }
 

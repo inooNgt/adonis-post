@@ -34,6 +34,11 @@ Route.post('/api/user/login', 'UserController.login').middleware('guest')
 Route.post('/api/user/logout', 'UserController.logout').middleware('auth')
 
 /**
+ * 用户上传文件
+ */
+Route.post('/api/user/file', 'UserController.userfile').middleware('auth')
+
+/**
  * 获取用户信息
  */
 Route.get('/api/user', 'UserController.index').middleware('auth')
