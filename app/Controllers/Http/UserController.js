@@ -4,9 +4,6 @@ const Env = use('Env')
 const User = use('App/Models/User')
 const qiniu = require('qiniu')
 const Helpers = use('Helpers')
-const path = require('path')
-
-const uploadPath = path.join(__dirname, '../../../uploads')
 
 class UserController {
   /**
@@ -17,6 +14,29 @@ class UserController {
     let user
     try {
       user = await auth.getUser()
+      response.ok(user)
+    } catch (e) {
+      response.status(400).send(e)
+    }
+  }
+
+  /**
+   * 用户修改头像
+   *
+   */
+  async avatar({ request, response, auth }) {
+    const _body = request.all()
+
+    if (!_body || !_body.avatar) {
+      response.status(400).send({ massage: 'avatar can not be empty!' })
+    }
+
+    let authUser = await auth.getUser()
+    let user = await User.findBy('id', authUser.id)
+    user.avatar = _body.avatar
+
+    try {
+      await user.save()
       response.ok(user)
     } catch (e) {
       response.status(400).send(e)
@@ -90,30 +110,22 @@ class UserController {
 
     const fileInfo = request.file('file', {
       types: ['image'],
-      size: '2mb'
+      size: '4mb'
     })
     const fileName = `${new Date().getTime()}.${fileInfo.extname}`
-
-    try {
-      await fileInfo.move(Helpers.tmpPath('uploads'), {
-        name: fileName
-      })
-    } catch (e) {
-      console.log(e)
-    }
 
     try {
       let result = await this.putFile(token, fileName, fileInfo.tmpPath)
       response.ok({ ...result, url: `${Env.get('QN_DOMAIN')}${result.key}` })
     } catch (e) {
       console.log(e)
-      response.send(e)
+      response.send(fileInfo)
     }
   }
 
   /**
    * 将文件传至第三方服务器
-   * @param  {...any} args
+   *
    */
   async putFile(...args) {
     let config0 = new qiniu.conf.Config()
@@ -126,7 +138,7 @@ class UserController {
         if (respErr) {
           reject(new Error(respErr))
         }
-        if (respInfo.statusCode == 200) {
+        if (respInfo && respInfo.statusCode == 200) {
           resolve(respBody)
         } else {
           reject(new Error(respInfo))

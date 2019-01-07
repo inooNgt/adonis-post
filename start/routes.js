@@ -44,6 +44,11 @@ Route.post('/api/user/file', 'UserController.userfile').middleware('auth')
 Route.get('/api/user', 'UserController.index').middleware('auth')
 
 /**
+ * 修改用户头像
+ */
+Route.post('/api/user/avatar', 'UserController.avatar').middleware('auth')
+
+/**
  * 文章列表
  */
 Route.get('/api/posts', 'PostController.index')
