@@ -52,8 +52,12 @@ Route.post('/api/user/avatar', 'UserController.avatar').middleware('auth')
  * 文章列表
  */
 Route.get('/api/posts', 'PostController.index')
+/**
+ * 文章详情
+ */
+Route.get('/api/posts/detail', 'PostController.detail')
 
 /**
  * 发布文章
  */
-Route.post('/api/post', 'PostController.post').middleware('auth')
+Route.post('/api/post/create', 'PostController.post').middleware('auth')

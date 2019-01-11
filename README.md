@@ -23,10 +23,22 @@ or manually clone the repo and then run `npm install`.
 
 ### Migrations
 
+Create a new migration file
+
+```js
+adonis make:migration users
+```
+
 Run the following command to run startup migrations.
 
 ```js
 adonis migration:run
+```
+
+Rollback all migrations to the 0 batch and then re-run them from the start.
+
+```
+adonis migration:refresh
 ```
 
 ### Postgresql

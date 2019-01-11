@@ -20,7 +20,7 @@ module.exports = {
     | is over 1mb it will not be processed.
     |
     */
-    limit: '1mb',
+    limit: '10mb',
 
     /*
     |--------------------------------------------------------------------------
@@ -60,9 +60,7 @@ module.exports = {
   |
   */
   raw: {
-    types: [
-      'text/*'
-    ]
+    types: ['text/*']
   },
 
   /*
@@ -74,9 +72,8 @@ module.exports = {
   |
   */
   form: {
-    types: [
-      'application/x-www-form-urlencoded'
-    ]
+    limit: '10mb',
+    types: ['application/x-www-form-urlencoded']
   },
 
   /*
@@ -88,9 +85,7 @@ module.exports = {
   |
   */
   files: {
-    types: [
-      'multipart/form-data'
-    ],
+    types: ['multipart/form-data'],
 
     /*
     |--------------------------------------------------------------------------
