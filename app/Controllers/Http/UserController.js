@@ -19,6 +19,26 @@ class UserController {
       response.status(400).send(e)
     }
   }
+  /**
+   * 查找用户信息
+   *
+   */
+  async findUserByName({ request, response, auth }) {
+    const _body = request.all()
+    let user
+
+    if (!_body || !_body.username) {
+      response.status(400).send({ massage: 'username can not be empty!' })
+      return
+    }
+    try {
+      user = await User.findBy('username', _body.username)
+      response.ok(user)
+    } catch (e) {
+      console.log(e)
+      response.status(400).send(e)
+    }
+  }
 
   /**
    * 用户修改头像

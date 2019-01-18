@@ -10,8 +10,7 @@ class PostsSchema extends Schema {
       table.string('post_title', 254)
       table.text('post_body')
       table.text('post_body_md')
-      table.text('user_id')
-      table.string('author', 80)
+      table.integer('user_id')
       table.timestamps()
     })
   }

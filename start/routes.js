@@ -27,6 +27,10 @@ Route.post('/api/user/register', 'UserController.register').middleware('guest')
  * 用户登录
  */
 Route.post('/api/user/login', 'UserController.login').middleware('guest')
+/**
+ * 用户登出
+ */
+Route.post('/api/user/logout', 'UserController.logout').middleware('auth')
 
 /**
  * 用户登录
@@ -42,6 +46,10 @@ Route.post('/api/user/file', 'UserController.userfile').middleware('auth')
  * 获取用户信息
  */
 Route.get('/api/user', 'UserController.index').middleware('auth')
+/**
+ * 查找用户信息
+ */
+Route.get('/api/user/find', 'UserController.findUserByName')
 
 /**
  * 修改用户头像

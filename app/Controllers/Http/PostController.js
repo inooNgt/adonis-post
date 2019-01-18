@@ -1,11 +1,28 @@
 'use strict'
 
 const Post = use('App/Models/Post')
+const Database = use('Database')
+const moment = require('moment')
 
 class PostController {
   async index({ request, response }) {
-    const posts = await Post.all()
-    response.status(200).send({ posts: posts.toJSON() })
+    const posts = await Database.select(
+      'posts.id',
+      'posts.post_title',
+      'posts.user_id',
+      'posts.created_at',
+      'users.username as author'
+    )
+      .from('posts')
+      .leftOuterJoin('users', 'posts.user_id', 'users.id')
+      .orderBy('created_at', 'desc')
+    posts.forEach(item => {
+      item['created_at'] = moment(item['created_at']).format(
+        'MMMM Do YYYY hh:mm'
+      )
+    })
+
+    response.status(200).send({ posts })
   }
 
   /**
@@ -23,7 +40,6 @@ class PostController {
       post.post_body = _body.post_body
       post.post_body_md = _body.post_body_md
       post.user_id = user.id
-      post.author = user.username
       try {
         await post.save()
         response.status(200).send(post)
