@@ -71,10 +71,11 @@ class UserController {
     const user = new User()
     const _body = request.all()
     let token
+    const defaultAvatar = User.defaultAvatar
     if (_body.username && _body.password) {
       user.username = _body.username
       user.password = _body.password
-      user.avatar = _body.avatar
+      user.avatar = _body.avatar || defaultAvatar
       user.email = _body.email
 
       try {

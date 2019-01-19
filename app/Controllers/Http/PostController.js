@@ -6,6 +6,9 @@ const moment = require('moment')
 
 class PostController {
   async index({ request, response }) {
+    const _body = request.all()
+    let page = _body.page || 1
+    let perPage = _body.perPage || 1
     const posts = await Database.select(
       'posts.id',
       'posts.post_title',
@@ -16,13 +19,15 @@ class PostController {
       .from('posts')
       .leftOuterJoin('users', 'posts.user_id', 'users.id')
       .orderBy('created_at', 'desc')
-    posts.forEach(item => {
+      .paginate(page, perPage || 20)
+
+    posts.data.forEach(item => {
       item['created_at'] = moment(item['created_at']).format(
         'MMMM Do YYYY hh:mm'
       )
     })
 
-    response.status(200).send({ posts })
+    response.status(200).send(posts)
   }
 
   /**
@@ -60,7 +65,6 @@ class PostController {
     const _body = request.all()
     const id = _body.id
     let post
-    console.log(_body)
     if (!id) {
       response.status(400).send({ massage: 'post id can not be empty!' })
     }

@@ -17,7 +17,6 @@ const Database = use('Database')
 class PostSeeder {
   async run() {
     const posts = await Database.table('posts')
-    console.log(posts)
   }
 }
 
