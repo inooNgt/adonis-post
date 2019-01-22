@@ -1,49 +1,22 @@
-# Adonis fullstack application
+# Adonis Post
 
-This is the fullstack boilerplate for AdonisJs, it comes pre-configured with.
+使用 AdonisJs 开发的 Nodejs 文章发布系统。
 
-1. Bodyparser
-2. Session
-3. Authentication
-4. Web security middleware
-5. CORS
-6. Edge template engine
-7. Lucid ORM
-8. Migrations and seeds
+已实现功能：
 
-## Setup
+- 登录/注册/注销
+- 发布文章
+- 上传头像
+- 获取文章列表及文章详情
+- 更新文章
 
-Use the adonis command to install the blueprint
+### Postgresql 相关
 
-```bash
-adonis new yardstick
-```
-
-or manually clone the repo and then run `npm install`.
-
-### Migrations
-
-Create a new migration file
-
-```js
-adonis make:migration users
-```
-
-Run the following command to run startup migrations.
-
-```js
-adonis migration:run
-```
-
-Rollback all migrations to the 0 batch and then re-run them from the start.
-
-```
-adonis migration:refresh
-```
-
-### Postgresql
+此项目使用 Postgresql 数据库存储数据。
 
 #### 配置
+
+在 Linux 系统上按装 postgresql 后需要进行一些配置以便远程查询。
 
 1.修改监听地址
 
@@ -61,31 +34,8 @@ vim /etc/postgresql/9.5/main/pg_hba.conf
 
 文档末尾加上 host all all 0.0.0.0/0 md5
 
-#### 在 window 查看远程端口是否开放
-
-```shell
-telnet HOST PORT
-
-```
-
-将# listen_addresses = 'localhost'改为 listen_addresses = '0.0.0.0'
-
 #### 启动、停止、重启
 
 ```shell
 sudo /etc/init.d/postgresql start|stop|restart
-```
-
-#### 查看状态
-
-```shell
-sudo netstat -ntlup
-
-```
-
-### Adonis 命令
-
-```shell
-sudo netstat -ntlup
-
 ```

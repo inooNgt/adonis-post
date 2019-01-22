@@ -50,6 +50,10 @@ Route.get('/api/user', 'UserController.index').middleware('auth')
  * 查找用户信息
  */
 Route.get('/api/user/find', 'UserController.findUserByName')
+/**
+ * 查找用户发布的文章
+ */
+Route.get('/api/user/posts', 'UserController.getMyPosts')
 
 /**
  * 修改用户头像
@@ -69,3 +73,7 @@ Route.get('/api/posts/detail', 'PostController.detail')
  * 发布文章
  */
 Route.post('/api/post/create', 'PostController.post').middleware('auth')
+/**
+ * 修改文章
+ */
+Route.post('/api/post/update', 'PostController.update').middleware('auth')

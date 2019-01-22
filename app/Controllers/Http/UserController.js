@@ -4,6 +4,8 @@ const Env = use('Env')
 const User = use('App/Models/User')
 const qiniu = require('qiniu')
 const Helpers = use('Helpers')
+const moment = require('moment')
+const Database = use('Database')
 
 class UserController {
   /**
@@ -36,6 +38,42 @@ class UserController {
       response.ok(user)
     } catch (e) {
       console.log(e)
+      response.status(400).send(e)
+    }
+  }
+
+  /**
+   * 获取我发布的文章
+   *
+   */
+  async getMyPosts({ request, response, auth }) {
+    let user = await auth.getUser()
+    const _body = request.all()
+    let page = _body.page || 1
+    let perPage = _body.perPage || 1
+
+    try {
+      const posts = await Database.select(
+        'posts.id',
+        'posts.post_title',
+        'posts.user_id',
+        'posts.created_at',
+        'users.username as author'
+      )
+        .from('posts')
+        .where('user_id', user.id)
+        .leftOuterJoin('users', 'posts.user_id', 'users.id')
+        .orderBy('created_at', 'desc')
+        .paginate(page, perPage || 20)
+
+      posts.data.forEach(item => {
+        item['created_at'] = moment(item['created_at']).format(
+          'MMMM Do YYYY hh:mm'
+        )
+      })
+
+      response.status(200).send(posts)
+    } catch (e) {
       response.status(400).send(e)
     }
   }
