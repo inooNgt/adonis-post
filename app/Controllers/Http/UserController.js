@@ -208,7 +208,7 @@ class UserController {
 
   /**
    * 获取七牛uptoken
-   *
+   * 详情见 https://developer.qiniu.com/kodo/sdk/1289/nodejs
    */
   getUpToken() {
     const qnconfig = {
