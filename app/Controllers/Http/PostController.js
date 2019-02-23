@@ -89,6 +89,28 @@ class PostController {
   }
 
   /**
+   * 删除文章
+   *
+   */
+  async delete({ request, response, auth }) {
+    const _body = request.all()
+    const postId = _body.id
+    const post = await Post.findBy('id', postId)
+
+    if (postId !== undefined) {
+      try {
+        await post.delete()
+        response.status(200).send({ message: 'delete succeed' })
+      } catch (e) {
+        console.log(e)
+        response.status(400).send(e)
+      }
+    } else {
+      response.status(406).send(new Error('参数错误'))
+    }
+  }
+
+  /**
    * 获取文章详情
    *
    */
@@ -102,7 +124,12 @@ class PostController {
 
     try {
       post = await Post.findBy('id', id)
-      response.status(200).send(post)
+      console.log('post', post)
+      if (post) {
+        response.status(200).send(post)
+      } else {
+        response.status(404).send({ message: 'not found' })
+      }
     } catch (e) {
       response.status(400).send(e)
     }

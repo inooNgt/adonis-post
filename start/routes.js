@@ -77,3 +77,7 @@ Route.post('/api/post/create', 'PostController.post').middleware('auth')
  * 修改文章
  */
 Route.post('/api/post/update', 'PostController.update').middleware('auth')
+/**
+ * 删除文章
+ */
+Route.delete('/api/post/delete', 'PostController.delete').middleware('auth')
