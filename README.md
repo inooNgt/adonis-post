@@ -92,12 +92,104 @@ class User extends Model {
 }
 ```
 
+### [模型](https://adonisjs.com/docs/4.1/lucid#_creating_model)
+
+Adonis 使用数据模型代替纯 SQL 操作数据，并且提供了功能强大的 API，包括建立数据关系、生命周期、Getters/setters、序列化数据、格式化数据等。
+
+#### 创建模型
+
+```shell
+adonis make:model User
+```
+
+#### 使用模型
+
+创建用户：
+
+```javascript
+const User = use('App/Models/User')
+
+const user = new User()
+
+user.username = 'virk'
+user.password = 'some-password'
+
+await user.save()
+```
+
+### 创建数据[migration](https://adonisjs.com/docs/4.1/migrations)
+
+#### 创建表
+
+```shell
+adonis make:migration users
+```
+
+创建成功后可在 database/migrations 中修改表结构
+
+```javascript
+'use strict'
+
+const Schema = use('Schema')
+
+class UsersSchema extends Schema {
+  up() {
+    this.create('users', table => {
+      table.increments()
+      table.timestamps()
+    })
+  }
+
+  down() {
+    this.drop('users')
+  }
+}
+
+module.exports = UsersSchema
+```
+
+### 运行 Migrations
+
+```shell
+adonis migration:run
+```
+
+注意需要先在 config/database.js 中配置好数据库
+
+其他 Migrations 命令：
+
+```shell
+migration:rollback //回滚到上一次的设置
+migration:refresh
+migration:reset
+```
+
+### 控制器
+
+控制器是模型层和视图层之间沟通的桥梁，其工作是使用对应模型进行数据处理，最后响应数据。
+
+#### 创建控制器
+
+```shell
+adonis make:controller User --type http
+```
+
+#### 使用控制器
+
+将路由交给对应控制器处理：
+
+```javascript
+Route.get(url, 'UserController.index')
+```
+
+路由的配置在 start/routes.js 文件中，[Using Route ](https://adonisjs.com/docs/4.1/routing).
+
 ### Lucid CRUD 操作
 
 AdonisJs 具有开箱即用的 SQL 数据库，并提供统一的 Javascript API 与数据库进行交互。
 Lucid 是 AdonisJs 查询数据库的解决方案， 它是将 SQL 数据存储和操作作为对象的架构模式,即通过 models 实例方法进行 CRUD 操作。
 
-#### 创建
+#### 新增
 
 ```javascript
 const post = new Post()

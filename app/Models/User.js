@@ -59,6 +59,16 @@ class User extends Model {
   posts() {
     return this.hasMany('App/Models/Post')
   }
+
+  /**
+   * user Note
+   * @method Note
+   *
+   * @return {Object}
+   */
+  note() {
+    return this.hasMany('App/Models/Note')
+  }
 }
 
 module.exports = User
