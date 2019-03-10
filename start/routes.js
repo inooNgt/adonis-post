@@ -81,3 +81,20 @@ Route.post('/api/post/update', 'PostController.update').middleware('auth')
  * 删除文章
  */
 Route.delete('/api/post/delete', 'PostController.delete').middleware('auth')
+
+/**
+ * 笔记列表
+ */
+Route.get('/api/notes', 'NoteController.index')
+/**
+ * 发布笔记
+ */
+Route.post('/api/note/create', 'NoteController.post').middleware('auth')
+/**
+ * 修改笔记
+ */
+Route.post('/api/note/update', 'NoteController.update').middleware('auth')
+/**
+ * 删除笔记
+ */
+Route.delete('/api/note/delete', 'NoteController.delete').middleware('auth')
