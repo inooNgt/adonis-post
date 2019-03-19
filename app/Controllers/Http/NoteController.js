@@ -17,6 +17,7 @@ class NoteController {
       const notes = await Database.select(
         'notes.id',
         'notes.note_title',
+        'notes.note_date',
         'notes.note_body',
         'notes.user_id',
         'notes.created_at',
@@ -27,12 +28,23 @@ class NoteController {
         .orderBy('created_at')
         .paginate(page, perPage || 20)
 
-      notes.data.forEach(item => {
-        item['date'] = moment(item['created_at']).format('YYYY-MM-DD')
+      let catalog = {}
+
+      notes.data.forEach((item, index) => {
+        let noteDate = item['note_date']
+
         item['created_at'] = moment(item['created_at']).format(
           'MMMM Do YYYY hh:mm'
         )
+
+        if (catalog[noteDate] && catalog[noteDate].length) {
+          catalog[noteDate].push(item)
+        } else {
+          catalog[noteDate] = [item]
+        }
       })
+
+      notes.catalog = catalog
 
       response.status(200).send(notes)
     } catch (e) {
