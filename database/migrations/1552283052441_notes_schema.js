@@ -7,6 +7,7 @@ class NotesSchema extends Schema {
   up() {
     this.create('notes', table => {
       table.increments()
+      table.string('note_date', 128)
       table.string('note_title', 254)
       table.text('note_body')
       table.text('note_body_md')

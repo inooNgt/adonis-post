@@ -24,10 +24,11 @@ class NoteController {
       )
         .from('notes')
         .leftOuterJoin('users', 'notes.user_id', 'users.id')
-        .orderBy('created_at', 'desc')
+        .orderBy('created_at')
         .paginate(page, perPage || 20)
 
       notes.data.forEach(item => {
+        item['date'] = moment(item['created_at']).format('YYYY-MM-DD')
         item['created_at'] = moment(item['created_at']).format(
           'MMMM Do YYYY hh:mm'
         )
@@ -50,13 +51,14 @@ class NoteController {
     const user = await auth.getUser()
 
     if (_body.note_title && _body.note_body) {
+      note.note_date = moment().format('L')
       note.note_title = _body.note_title
       note.note_body = _body.note_body
       note.note_body_md = _body.note_body_md
       note.user_id = user.id
       try {
         await note.save()
-        response.status(200).send(note)
+        response.status(200).send({ id: note.id })
       } catch (e) {
         console.log(e)
         response.status(400).send(e)
