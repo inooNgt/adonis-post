@@ -143,7 +143,6 @@ class NoteController {
 
     try {
       note = await Note.findBy('id', id)
-      console.log('note', note)
       if (note) {
         response.status(200).send(note)
       } else {

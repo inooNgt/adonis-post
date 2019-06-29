@@ -124,7 +124,6 @@ class PostController {
 
     try {
       post = await Post.findBy('id', id)
-      console.log('post', post)
       if (post) {
         response.status(200).send(post)
       } else {

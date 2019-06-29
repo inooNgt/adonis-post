@@ -259,3 +259,23 @@ sudo ufw allow  5432/tcp
 ```shell
 sudo /etc/init.d/postgresql start|stop|restart
 ```
+
+
+### Nginx 命令
+
+#### 判断Nginx配置是否正确
+```shell
+nginx -t -c /usr/local/nginx/conf/nginx.conf
+```
+#### 启动
+```shell
+nginx -c /usr/local/nginx/conf/nginx.conf
+```
+#### 快速停止
+```shell
+nginx -s stop
+```
+#### 配置文件修改重装载命令
+```shell
+nginx -s reload
+```
