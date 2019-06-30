@@ -33,11 +33,6 @@ Route.post('/api/user/login', 'UserController.login').middleware('guest')
 Route.post('/api/user/logout', 'UserController.logout').middleware('auth')
 
 /**
- * 用户登录
- */
-Route.post('/api/user/logout', 'UserController.logout').middleware('auth')
-
-/**
  * 用户上传文件
  */
 Route.post('/api/user/file', 'UserController.userfile').middleware('auth')
@@ -98,3 +93,12 @@ Route.post('/api/note/update', 'NoteController.update').middleware('auth')
  * 删除笔记
  */
 Route.delete('/api/note/delete', 'NoteController.delete').middleware('auth')
+
+/**
+ * 文件列表
+ */
+Route.get('/api/files', 'FilemapController.files')
+/**
+ * 上传文件
+ */
+Route.post('/api/file/upload', 'FilemapController.upload')
