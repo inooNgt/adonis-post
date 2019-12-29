@@ -224,9 +224,17 @@ await post.delete()
 
 更多方法见：https://adonisjs.com/docs/4.1/lucid
 
-### Postgresql 相关
+### Postgresql
 
 此项目使用 Postgresql 数据库存储数据。
+
+#### 安装
+
+```shell
+sudo apt-get  upgrade
+sudo apt-get install postgresql
+```
+
 
 #### 配置
 
@@ -261,15 +269,26 @@ sudo /etc/init.d/postgresql start|stop|restart
 ```
 
 
-### Nginx 命令
+### Nginx
+
+### 安装
+```shell
+sudo apt-get install nginx
+```
+Ubuntu安装之后的文件结构为：
+- 所有的配置文件都在/etc/nginx下，并且每个虚拟主机已经安排在了/etc/nginx/sites-available下
+- 程序文件在/usr/sbin/nginx
+- 日志放在了/var/log/nginx中
+- 并已经在/etc/init.d/下创建了启动脚本nginx
+- 默认的虚拟主机的目录设置在了/var/www/nginx-default
 
 #### 判断Nginx配置是否正确
 ```shell
-nginx -t -c /usr/local/nginx/conf/nginx.conf
+nginx -t -c /etc/nginx/nginx.conf
 ```
 #### 启动
 ```shell
-nginx -c /usr/local/nginx/conf/nginx.conf
+nginx -c /etc/nginx/nginx.conf
 ```
 #### 快速停止
 ```shell

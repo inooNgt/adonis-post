@@ -133,7 +133,6 @@ class UserController {
    */
   async login({ request, response, auth }) {
     const { username, password } = request.all()
-    console.log('login', username, password)
     let token
     try {
       token = await auth.attempt(username, password)
